@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.impute import KNNImputer, MissingIndicator
+from sklearn.impute import KNNImputer, IterativeImputer
 from sklearn.preprocessing import LabelEncoder
 
 pd.set_option("display.max_columns", None)
@@ -40,7 +40,7 @@ cate_features
 
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X), columns = bank_X.columns)
-bank_X_imputed_knn.to_csv("bank_X_imputed_knn.csv")
+bank_X_imputed_knn.to_csv("./data/bank_X_imputed_knn.csv")
 
 import json
 
