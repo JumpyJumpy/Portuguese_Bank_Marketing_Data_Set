@@ -39,3 +39,8 @@ cate_features
 
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X), columns = bank_X.columns)
+bank_X_imputed_knn.to_csv("bank_X_imputed_knn.csv")
+
+import json
+with open("mapping.json", "w") as file:
+    file.write(json.dumps(mapping))
