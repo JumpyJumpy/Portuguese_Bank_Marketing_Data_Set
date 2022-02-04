@@ -19,8 +19,6 @@ bank = bank.replace("unknown", value = np.nan)
 # drop rows with "duration" = 0, since it indicates y = "no". Usually
 bank.drop(index = bank.loc[bank["duration"] == 0, :].index)
 
-
-
 bank_X = bank.drop(columns = ["y"])
 bank_y = bank["y"]
 cate_features = []
@@ -34,7 +32,7 @@ bank_X.info()
 np.sum(bank_X.isna())
 
 # Generating dummy variables
-bank_X_flattened = pd.get_dummies(bank_X, dummy_na = True)
+bank_X_flattened = pd.get_dummies(bank_X, dummy_na = False)
 bank_X_flattened.to_csv("./data/bank_X_flattened.csv")
 """
 # label encoding
