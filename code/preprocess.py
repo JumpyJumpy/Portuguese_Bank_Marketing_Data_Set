@@ -15,9 +15,11 @@ bank.describe()
 bank.info()
 
 bank = bank.replace("unknown", value = np.nan)
-bank.to_csv("./data/bank.csv")
-# drop rows with "duration" = 0, since it indicates y = "no". Usually
-# bank.drop(index = bank.loc[bank["duration"] == 0, :].index)
+
+# drop "duration" column based on the description
+bank = bank.drop(column = ["duration"])
+
+bank.to_csv("./data/bank.csv", index = False)
 
 bank_X = bank.drop(columns = ["y"])
 bank_y = bank["y"]
