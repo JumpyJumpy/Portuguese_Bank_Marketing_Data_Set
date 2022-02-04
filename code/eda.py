@@ -29,11 +29,14 @@ More detailed and readable plots will follow.
 **However, from the graph, it still can be seen that most variables are not correlated with other variables.**
 """
 #%%
-bank_flattened = pd.read_csv("./data/bank_imputed_knn.csv")
+fig, ax = plt.subplots(2, 2, figsize = (20, 10))
+for i in range(len(num_var)):
+    if i < 7:
+        sns.stripplot(x = num_var[i], y = "y", data = bank, jitter = True, ax = ax[0, i])
+        break
+    else:
+        sns.stripplot(x = num_var[i], y = "y", data = bank, jitter = True, ax = ax[1, i - 7])
 
-plt.figure(figsize = (20, 16))
-sns.set(font_scale = 2)
-sns.heatmap(bank_flattened.corr(), cmap = "YlGnBu", linewidth = 1)
 plt.show()
 #%% md
 
