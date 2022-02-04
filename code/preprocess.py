@@ -15,9 +15,9 @@ bank.describe()
 bank.info()
 
 bank = bank.replace("unknown", value = np.nan)
-
+bank.to_csv("./data/bank.csv")
 # drop rows with "duration" = 0, since it indicates y = "no". Usually
-bank.drop(index = bank.loc[bank["duration"] == 0, :].index)
+# bank.drop(index = bank.loc[bank["duration"] == 0, :].index)
 
 bank_X = bank.drop(columns = ["y"])
 bank_y = bank["y"]
@@ -33,7 +33,7 @@ np.sum(bank_X.isna())
 
 # Generating dummy variables
 bank_X_flattened = pd.get_dummies(bank_X, dummy_na = False)
-bank_X_flattened.to_csv("./data/bank_X_flattened.csv")
+bank_X_flattened.to_csv("./data/bank_X_flattened.csv", index = False)
 """
 # label encoding
 # not working if we want to do KNN imputation or logistic regression
@@ -56,9 +56,9 @@ cate_features
 # KNN imputation
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
-bank_X_imputed_knn.join(bank_y).to_csv(path_or_buf = './data/bank_imputed_knn.csv')
+bank_X_imputed_knn.join(bank_y).to_csv(path_or_buf = "./data/bank_imputed_knn.csv", index = False)
 
 # iterative imputation
 imp = IterativeImputer()
 bank_X_imputed_imp = pd.DataFrame(imp.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
-bank_X_imputed_imp.join(bank_y).to_csv("./data/bank_imputed_imp.csv")
+bank_X_imputed_imp.join(bank_y).to_csv("./data/bank_imputed_imp.csv", index = False)
