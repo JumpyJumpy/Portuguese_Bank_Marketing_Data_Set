@@ -35,7 +35,7 @@ np.sum(bank_X.isna())
 
 # Generating dummy variables
 bank_X_flattened = pd.get_dummies(bank_X, dummy_na = True)
-
+bank_X_flattened.to_csv("./data/bank_X_flattened.csv")
 """
 # label encoding
 # not working if we want to do KNN imputation or logistic regression
@@ -54,18 +54,13 @@ np.sum(bank_X.isna())
 bank_X.describe()
 bank_X.info()
 cate_features
-
 """
 # KNN imputation
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
-bank_X_imputed_knn.join(bank_y).to_csv("./data/bank_imputed_knn.csv")
+bank_X_imputed_knn.join(bank_y).to_csv(path_or_buf = './data/bank_imputed_knn.csv')
 
 # iterative imputation
 imp = IterativeImputer()
 bank_X_imputed_imp = pd.DataFrame(imp.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
 bank_X_imputed_imp.join(bank_y).to_csv("./data/bank_imputed_imp.csv")
-
-plt.figure(figsize = (16, 16))
-sn.heatmap(bank_X_flattened.corr(), cmap = "YlGnBu", linewidth = 1)
-plt.show()
