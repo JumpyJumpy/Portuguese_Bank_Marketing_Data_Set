@@ -15,9 +15,17 @@ bank.describe()
 bank.info()
 
 bank = bank.replace("unknown", value = np.nan)
+bank = bank.replace("yes", value = 1)
+bank = bank.replace("no", value = 0)
+bank = bank.replace("success", value = 1)
+bank = bank.replace("failure", value = 0)
+bank = bank.replace("nonexistent", value = np.nan)
+
+bank.describe()
+bank.info()
 
 # drop "duration" column based on the description
-bank = bank.drop(column = ["duration"])
+bank = bank.drop(columns = ["duration"])
 
 bank.to_csv("./data/bank.csv", index = False)
 
@@ -59,8 +67,9 @@ cate_features
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
 bank_X_imputed_knn.join(bank_y).to_csv(path_or_buf = "./data/bank_imputed_knn.csv", index = False)
-
+bank_X_imputed_knn.info()
 # iterative imputation
 imp = IterativeImputer()
 bank_X_imputed_imp = pd.DataFrame(imp.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
 bank_X_imputed_imp.join(bank_y).to_csv("./data/bank_imputed_imp.csv", index = False)
+bank_X_imputed_imp.info()
