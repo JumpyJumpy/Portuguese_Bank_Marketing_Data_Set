@@ -1,15 +1,25 @@
 import numpy as np
 import pandas as pd
+import seaborn as sn
+import matplotlib.pyplot as plt
+from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import KNNImputer, IterativeImputer
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 pd.set_option("display.max_columns", None)
 bank = pd.read_csv("./data/Casestudy Data.csv")
 
+bank.shape
+bank.head
 bank.describe()
 bank.info()
 
 bank = bank.replace("unknown", value = np.nan)
+
+# drop rows with "duration" = 0, since it indicates y = "no". Usually
+bank.drop(index = bank.loc[bank["duration"] == 0, :].index)
+
+
 
 bank_X = bank.drop(columns = ["y"])
 bank_y = bank["y"]
@@ -17,11 +27,18 @@ cate_features = []
 
 for col in bank_X.columns:
     if bank_X[col].dtype == "object":
-        # bank_X[col] = bank_X[col].astype("category")
+        bank_X[col] = bank_X[col].astype("category")
         cate_features.append(col)
 
 bank_X.info()
 np.sum(bank_X.isna())
+
+# Generating dummy variables
+bank_X_flattened = pd.get_dummies(bank_X, dummy_na = True)
+
+"""
+# label encoding
+# not working if we want to do KNN imputation or logistic regression
 
 le = LabelEncoder()
 mapping = {}
@@ -38,11 +55,17 @@ bank_X.describe()
 bank_X.info()
 cate_features
 
+"""
+# KNN imputation
 imputer = KNNImputer(weights = "distance")
-bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X), columns = bank_X.columns)
-bank_X_imputed_knn.to_csv("./data/bank_X_imputed_knn.csv")
+bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
+bank_X_imputed_knn.join(bank_y).to_csv("./data/bank_imputed_knn.csv")
 
-import json
+# iterative imputation
+imp = IterativeImputer()
+bank_X_imputed_imp = pd.DataFrame(imp.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
+bank_X_imputed_imp.join(bank_y).to_csv("./data/bank_imputed_imp.csv")
 
-with open("mapping.json", "w") as file:
-    file.write(json.dumps(mapping))
+plt.figure(figsize = (16, 16))
+sn.heatmap(bank_X_flattened.corr(), cmap = "YlGnBu", linewidth = 1)
+plt.show()
