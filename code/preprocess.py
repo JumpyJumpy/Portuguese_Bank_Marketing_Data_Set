@@ -74,7 +74,7 @@ bank_X.join(bank_y).to_csv("./data/bank.csv", index = False)
 
 # Generating dummy variables
 bank_X_flattened = pd.get_dummies(bank_X, dummy_na = False)
-bank_X_flattened.to_csv("./data/bank_X_flattened.csv", index = False)
+bank_X_flattened.join(bank_y).to_csv("./data/bank_flattened.csv", index = False)
 
 """
 # label encoding
