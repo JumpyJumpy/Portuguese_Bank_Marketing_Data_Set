@@ -15,10 +15,14 @@ bank_y = bank_logit["y"]
 bank_raw_X = bank_raw.drop(columns = ["y"])
 bank_raw_y = bank_raw["y"]
 
-logit = LogisticRegressionCV(penalty = "l1", solver = "liblinear").fit(bank_X, bank_y)
+
+# Logistic regression
+logit = LogisticRegressionCV(penalty = "l1", solver = "liblinear").fit(bank_X, bank_y)  # L1 norm to get sparse solution
 logit.score(bank_X, bank_y)
 logit_coef = bank_X.columns[logit.coef_[0] != 0]
 
+
+# Random forest
 rf = RandomForestClassifier(criterion = "entropy").fit(bank_raw_X, bank_raw_y)
 rf.score(bank_raw_X, bank_raw_y)
 

@@ -27,7 +27,6 @@ bank.info()
 # drop "duration" column based on the description
 bank = bank.drop(columns = ["duration"])
 
-
 bank_X = bank.drop(columns = ["y"])
 bank_y = bank["y"]
 cate_features = []
@@ -51,7 +50,7 @@ ordinal_cate = [
         'admin.',
         'technician',
         'management',
-        'entrepreneur',
+        'entrepreneur'
     ],
     [
         'illiterate',
@@ -69,8 +68,6 @@ enc.fit(bank_X[["job", "education"]])
 enc.categories_
 bank_X[["job", "education"]] = pd.DataFrame(enc.transform(bank_X[["job", "education"]]))
 bank_X.join(bank_y).to_csv("./data/bank.csv", index = False)
-
-
 
 # Generating dummy variables
 bank_X_flattened = pd.get_dummies(bank_X, dummy_na = False)
