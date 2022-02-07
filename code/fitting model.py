@@ -21,7 +21,10 @@ logit = LogisticRegressionCV(penalty = "l1", solver = "liblinear").fit(bank_X, b
 logit.score(bank_X, bank_y)
 logit_coef = bank_X.columns[logit.coef_[0] != 0]
 
-
+selector = RFE(LogisticRegression(max_iter = 100))
+selector = selector.fit(bank_raw_X, bank_raw_y)
+selector.support_
+selector.ranking_
 # Random forest
 rf = RandomForestClassifier(criterion = "entropy").fit(bank_raw_X, bank_raw_y)
 rf.score(bank_raw_X, bank_raw_y)
