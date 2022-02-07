@@ -66,6 +66,9 @@ ordinal_cate = [
 enc = OrdinalEncoder(categories = ordinal_cate, handle_unknown = 'use_encoded_value', unknown_value = np.nan)
 enc.fit(bank_X[["job", "education"]])
 enc.categories_
+
+bank_X["pdays"] = bank_X["pdays"] / np.sqrt(np.var(bank_X["pdays"]))
+
 bank_X[["job", "education"]] = pd.DataFrame(enc.transform(bank_X[["job", "education"]]))
 bank_X.join(bank_y).to_csv("./data/bank.csv", index = False)
 
@@ -91,12 +94,12 @@ np.sum(bank_X.isna())
 bank_X.describe()
 bank_X.info()
 cate_features
-"""
 # KNN imputation
 imputer = KNNImputer(weights = "distance")
 bank_X_imputed_knn = pd.DataFrame(imputer.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
 bank_X_imputed_knn.join(bank_y).to_csv(path_or_buf = "./data/bank_imputed_knn.csv", index = False)
 bank_X_imputed_knn.info()
+"""
 # iterative imputation
 imp = IterativeImputer()
 bank_X_imputed_imp = pd.DataFrame(imp.fit_transform(bank_X_flattened), columns = bank_X_flattened.columns)
