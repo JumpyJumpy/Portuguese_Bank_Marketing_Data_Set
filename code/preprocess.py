@@ -62,15 +62,15 @@ ordinal_cate = [
         'university.degree'
     ]
 ]
-
+"""
 enc = OrdinalEncoder(categories = ordinal_cate, handle_unknown = 'use_encoded_value', unknown_value = np.nan)
 enc.fit(bank_X[["job", "education"]])
 enc.categories_
-
+bank_X[["job", "education"]] = pd.DataFrame(enc.transform(bank_X[["job", "education"]]))
+"""
 # Rescale "pdays"
 bank_X["pdays"] = bank_X["pdays"] / np.sqrt(np.var(bank_X["pdays"]))
 
-bank_X[["job", "education"]] = pd.DataFrame(enc.transform(bank_X[["job", "education"]]))
 bank_X.join(bank_y).to_csv("./data/bank.csv", index = False)
 
 # Generating dummy variables
