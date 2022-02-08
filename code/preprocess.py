@@ -67,6 +67,7 @@ enc = OrdinalEncoder(categories = ordinal_cate, handle_unknown = 'use_encoded_va
 enc.fit(bank_X[["job", "education"]])
 enc.categories_
 
+# Rescale "pdays"
 bank_X["pdays"] = bank_X["pdays"] / np.sqrt(np.var(bank_X["pdays"]))
 
 bank_X[["job", "education"]] = pd.DataFrame(enc.transform(bank_X[["job", "education"]]))
